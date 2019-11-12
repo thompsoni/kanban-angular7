@@ -1,0 +1,89 @@
+<!-- Main Header -->
+<header class="main-header">
+	<!-- Logo -->
+	<a href="#" routerLink="/" class="logo">
+		<!-- mini logo for sidebar mini 50x50 pixels -->
+		<span class="logo-mini" style="font-size: 12px; font-weight: bold">KANBAN</span>
+		<!-- logo for regular state and mobile devices -->
+		<span class="logo-lg"><strong>KANBAN</strong> <small style="font-size: 12px"> Demo</small></span>
+	</a>
+	<!-- Header Navbar -->
+	<nav class="navbar navbar-static-top" role="navigation">
+		<!-- Sidebar toggle button-->
+		<!--<a class="visible-xs-block sidebar-toggle" (click)="ts.toggle('sidebar-open','layout-navigation-open');" role="button">
+			<span class="sr-only">Toggle navigation</span>
+		</a>-->
+		<a *ngIf="!menuDisabled" class="sidebar-toggle hidden-xs" (click)="ts.toggle('sidebar-collapse','layout-navigation-collapse');" role="button">
+			<span class="sr-only">Toggle navigation</span>
+		</a>
+		<!-- Navbar Right Menu -->
+		<div class="navbar-custom-menu">
+			<ul class="nav navbar-nav">
+				<!-- Messages: style can be found in dropdown.less-->
+				<!-- <li class="dropdown messages-menu messagesBox" [ngClass]="{'open': ts.getValue('messages')}"></li> -->
+				<!-- Notifications Menu -->
+				<!-- <li class="dropdown notifications-menu notificationsBox" [ngClass]="{'open': ts.getValue('notification')}"></li> -->
+				<!-- Tasks Menu -->
+				<!-- <li class="dropdown tasks-menu tasksBox" [ngClass]="{'open': ts.getValue('tasks')}"></li> -->
+				<!-- User Account Menu -->
+				<!-- <li class="dropdown user user-menu userBox" [ngClass]="{'open': ts.getValue('user')}"></li> -->
+				<!-- Control Sidebar Toggle Button -->
+				<!-- <li>
+					<a (click)="ts.toggle('sidebar')" class="toggle-sidebar-right">
+						<i class="fa fa-gears"></i>
+					</a>
+				</li> -->
+			  
+				<ng-template ngFor let-item [ngForOf]="links" let-index="index">
+					<ng-template [ngIf]="!item.sublinks">
+						<li routerLinkActive="active" [routerLinkActiveOptions]="{exact: item.link.join('/')==='/' }">
+							<a *ngIf="!item.external && item?.dropdown === false" [routerLink]="item.link" (click)="collapseMenu(item.title)">
+								<i class="fa fa-{{item.icon}}"></i>
+								<span>{{item.title}}</span>
+							</a>
+							<a *ngIf="item.external && item?.dropdown === false" [href]="item.link" [target]="item.target" (click)="collapseMenu(item.title)">
+								<i class="fa fa-{{item.icon}}"></i>
+								<span>{{item.title}}</span>
+							</a>
+							<a id="dropdown-link" *ngIf="item?.dropdown === true" [routerLink]="item.link" [target]="item.target" (click)="collapseMenu(item.title)">
+								<i class="fa fa-{{item.icon}}"></i>
+								<span>{{item.title}}</span>
+							</a>
+							<ul *ngIf="item?.dropdown === true" id="dropdown-content" class="dropdown-menu" role="menu">
+								<li *ngFor="let child of item?.children">
+									<a [routerLink]="child?.link"><i class="fa fa-{{child?.icon}}"></i> {{child?.title}}</a>
+								</li>
+							</ul>
+
+						</li>
+					</ng-template>
+					<ng-template [ngIf]="item.sublinks">
+						<li class="treeview" [ngClass]="{'active': 
+						ts.getValue('item'+index,'menu-aside') ||
+						anySubActive(item) }" routerLinkActive="active">
+							<a (click)="ts.toggle('item'+index,'menu-aside')">
+								<i *ngIf="item.icon" class="fa fa-{{item.icon}}"></i>
+								<span>{{item.title}}</span>
+								<i class="fa fa-angle-left pull-right"></i>
+							</a>
+							<ul class="treeview-menu">
+								<ng-template ngFor let-subitem [ngForOf]="item.sublinks">
+									<li routerLinkActive="active">
+										<a *ngIf="!subitem.external" [routerLink]="subitem.link" (click)="ts.resetNamespace('menu-aside')">
+											<i *ngIf="subitem.icon" class="fa fa-{{subitem.icon}}"></i>
+											<span>{{subitem.title}}</span>
+										</a>
+										<a *ngIf="subitem.external" [href]="subitem.link" [target]="subitem.target">
+											<i *ngIf="subitem.icon" class="fa fa-{{subitem.icon}}"></i>
+											<span>{{subitem.title}}</span>
+										</a>
+									</li>
+								</ng-template>
+							</ul>
+						</li>
+					</ng-template>
+				</ng-template>
+			</ul>
+		</div>
+	</nav>
+</header>

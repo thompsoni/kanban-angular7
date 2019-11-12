@@ -1,0 +1,41 @@
+{
+  "external": {
+    "urls": [
+      {
+        "url":
+          "https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic"
+      },
+      {
+        "url":
+          "https://fonts.gstatic.com/s/sourcesanspro/v10/ODelI1aHBYDBqgeIAH2zlNV_2ngZ8dMf8fLgjYEouxg.woff2"
+      },
+      {
+        "url": "https://fonts.googleapis.com/css?family=Roboto:300,400,500,700"
+      }
+    ]
+  },
+  "static.ignore": ["\\.js\\.map$"],
+  "routing": {
+    "index": "./index.html",
+    "routes": {
+      "/": {
+        "match": "exact"
+      },
+      "/admin/": {
+        "prefix": true
+      },
+      "/login": {
+        "prefix": false
+      },
+      "/page/": {
+        "prefix": true
+      },
+      "/user": {
+        "prefix": false
+      },
+      "/quality-schedule": {
+        "prefix": false
+      }
+    }
+  }
+}

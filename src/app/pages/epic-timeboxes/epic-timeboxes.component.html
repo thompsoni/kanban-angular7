@@ -1,0 +1,311 @@
+
+<div class="fit-toolbar">
+    <button
+    style="margin-right: 2px; margin-bottom: 2px"
+    type="button"
+    class="fit-btn"
+    (click)="showDialog(true, 'create')">
+        <i class="fa fa-plus"></i> Create
+    </button>
+
+    <button
+    style="margin-right: 2px; margin-bottom: 2px"
+    type="button" (click)="showDialog(true, 'epicSpecsDialog')"
+    class="fit-btn">
+        <i class="fa fa-area-chart"></i> Graph
+    </button>
+</div>
+
+<!-- TIMEBOXES -->
+<div class="board-container" id="board-container">
+    <div [ngClass]="{'column-content': toggleCol[0] === false, 'column-content-closed': toggleCol[0] === true }">
+        <div class="header-content">
+            <h3 *ngIf="toggleCol[0] === false">
+                Backlog
+                <i (click)="toggleColumn(0)" style="float: right; line-height: 30px; margin-right: 10px" class="pointer fa fa-chevron-circle-down"></i>
+            </h3>
+            <div class="header-button" *ngIf="toggleCol[0] === true">
+                <i (click)="toggleColumn(0)" class="pointer fa fa-chevron-circle-left"></i>
+            </div>
+        </div>
+
+        <div class="main-content" id="board-col1">
+            <div id="board-col1-h" *ngIf="toggleCol[0] === false" class="board-column" ngxDroppable="zone1" [model]="col1" [copy]="false" (drop)="onDrop($event)"
+                (drag)="onDrag($event)" (over)="onOver($event)" (out)="log($event)">
+
+                <!-- CARD-->
+                <div *ngFor="let card of col1" [model]="card" ngxDraggable="['zone1', 'zone2', 'zone3', 'zone4']"
+                [ngClass]="{
+                'card': true,
+                'status-approved': card?.value?.epic?.state?.id === 'Approved',
+                'status-closed': card?.value?.epic?.state?.id === 'Closed',
+                'status-draft': card?.value?.epic?.state?.id === 'Draft',
+                'status-postponed': card?.value?.epic?.state?.id === 'Postponed',
+                'status-proposed': card?.value?.epic?.state?.id === 'Proposed',
+                'status-rejected': card?.value?.epic?.state?.id === 'Rejected'}">
+                    <div class="card-header">
+                        <i class="fa fa-bars"></i>
+                        <div title="{{card?.value?.epic?.name}}" class="title">{{card?.value?.epic?.rank}} {{card?.value?.epic?.name}}</div>
+                        <i title="{{card?.value?.epic?.description}}" class="fa fa-question-circle"></i>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-owner" *ngIf="card?.value?.epic?.owner">
+                            <i class="fa fa-user pr2 gray"></i>
+                            {{card?.value?.epic?.owner?.firstName}} {{card?.value?.epic?.owner?.lastName}}
+                        </div>
+
+                        <div class="card-state text-draft"
+                        [ngClass]="{ 'text-approved': card?.value?.epic?.state?.id === 'Approved',
+                        'text-closed': card?.value?.epic?.state?.id === 'Closed',
+                        'text-draft': card?.value?.epic?.state?.id === 'Draft',
+                        'text-postponed': card?.value?.epic?.state?.id === 'Postponed',
+                        'text-proposed': card?.value?.epic?.state?.id === 'Proposed',
+                        'text-rejected': card?.value?.epic?.state?.id === 'Rejected'}"
+                        *ngIf="card?.value?.epic?.state?.id">
+                        <i class="fa fa-tag pr2"></i>
+                        {{card?.value?.epic?.state?.id}}
+                        </div>
+
+                        <div class="card-status text-success"
+                        [ngClass]="{ 'text-success': card?.value?.epic?.status?.id === 'Green',
+                        'text-warning': card?.value?.epic?.status?.id === 'Yellow',
+                        'text-danger': card?.value?.epic?.status?.id === 'Red'}"
+                        *ngIf="card?.value?.epic?.status?.id">
+                        <i class="fa fa-rocket pr2"></i>
+                        {{card?.value?.epic?.status?.id}}
+                        </div>
+
+                        <div title="Effort" class="size-label"><small>{{card?.value?.epic?.effort?.id}}</small></div>
+                    </div>
+                    <div class="card-footer">
+                        <small title="Value estimate / Duration estimate" *ngIf="card?.value?.epic?.valueEstimate && card?.value?.epic?.durationEstimate" class="badge alert-warning">
+                            <i class="fa fa-fw fa-hourglass-end"></i> {{Math.round(card?.value?.epic?.valueEstimate / card?.value?.epic?.durationEstimate * 10) / 10}}
+                        </small>
+                    </div>
+                    
+                </div>
+                <!-- DISABLED -->
+                <!--<div *ngFor="let card of col1" class="card status-draft" style="opacity: 0.3">
+                    <div class="card-header">{{card?.value}}</div>
+                    <div class="card-content">...</div>
+                    <div class="card-footer"></div>
+                </div>-->
+            </div>
+            
+        </div>
+
+    </div>
+    <div [ngClass]="{'column-content': toggleCol[1] === false, 'column-content-closed': toggleCol[1] === true }">
+        <div class="header-content">
+            <h3 *ngIf="toggleCol[1] === false">
+                WIP
+                <i (click)="toggleColumn(1)" style="float: right; line-height: 30px; margin-right: 10px" class="pointer fa fa-chevron-circle-down"></i>
+            </h3>
+            <div class="header-button" *ngIf="toggleCol[1] === true">
+                <i (click)="toggleColumn(1)" class="pointer fa fa-chevron-circle-left"></i>
+            </div>
+        </div>
+
+        <div class="main-content" id="board-col2">
+            <div id="board-col2-h" *ngIf="toggleCol[1] === false" class="board-column" ngxDroppable="zone2" [model]="col2" [copy]="false" (drop)="onDrop($event)"
+                (drag)="onDrag($event)" (over)="onOver($event)" (out)="log($event)">
+                
+                <!-- CARD-->
+                <div *ngFor="let card of col2" [model]="card" ngxDraggable="['zone1', 'zone2', 'zone3', 'zone4']"
+                [ngClass]="{
+                'card': true,
+                'status-approved': card?.value?.epic?.state?.id === 'Approved',
+                'status-closed': card?.value?.epic?.state?.id === 'Closed',
+                'status-draft': card?.value?.epic?.state?.id === 'Draft',
+                'status-postponed': card?.value?.epic?.state?.id === 'Postponed',
+                'status-proposed': card?.value?.epic?.state?.id === 'Proposed',
+                'status-rejected': card?.value?.epic?.state?.id === 'Rejected'}">
+                    <div class="card-header">
+                        <i class="fa fa-bars"></i>
+                        <div title="{{card?.value?.epic?.name}}" class="title">{{card?.value?.epic?.rank}} {{card?.value?.epic?.name}}</div>
+                        <i title="{{card?.value?.epic?.description}}" class="fa fa-question-circle"></i>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-owner" *ngIf="card?.value?.epic?.owner">
+                            <i class="fa fa-user pr2 gray"></i>
+                            {{card?.value?.epic?.owner?.firstName}} {{card?.value?.epic?.owner?.lastName}}
+                        </div>
+
+                        <div class="card-state text-draft"
+                        [ngClass]="{ 'text-approved': card?.value?.epic?.state?.id === 'Approved',
+                        'text-closed': card?.value?.epic?.state?.id === 'Closed',
+                        'text-draft': card?.value?.epic?.state?.id === 'Draft',
+                        'text-postponed': card?.value?.epic?.state?.id === 'Postponed',
+                        'text-proposed': card?.value?.epic?.state?.id === 'Proposed',
+                        'text-rejected': card?.value?.epic?.state?.id === 'Rejected'}"
+                        *ngIf="card?.value?.epic?.state?.id">
+                        <i class="fa fa-tag pr2"></i>
+                        {{card?.value?.epic?.state?.id}}
+                        </div>
+
+                        <div class="card-status text-success"
+                        [ngClass]="{ 'text-success': card?.value?.epic?.status?.id === 'Green',
+                        'text-warning': card?.value?.epic?.status?.id === 'Yellow',
+                        'text-danger': card?.value?.epic?.status?.id === 'Red'}"
+                        *ngIf="card?.value?.epic?.status?.id">
+                        <i class="fa fa-rocket pr2"></i>
+                        {{card?.value?.epic?.status?.id}}
+                        </div>
+
+                        <div title="Effort" class="size-label"><small>{{card?.value?.epic?.effort?.id}}</small></div>
+                    </div>
+                    <div class="card-footer">
+                        <small title="Value estimate / Duration estimate" *ngIf="card?.value?.epic?.valueEstimate && card?.value?.epic?.durationEstimate" class="badge alert-warning">
+                            <i class="fa fa-fw fa-hourglass-end"></i> {{Math.round(card?.value?.epic?.valueEstimate / card?.value?.epic?.durationEstimate * 10) / 10}}
+                        </small>
+                    </div>
+                    
+                </div>
+
+            </div>
+            
+        </div>
+    </div>
+    <div [ngClass]="{'column-content': toggleCol[2] === false, 'column-content-closed': toggleCol[2] === true }">
+        <div class="header-content">
+            <h3 *ngIf="toggleCol[2] === false">
+                Done
+                <i (click)="toggleColumn(2)" style="float: right; line-height: 30px; margin-right: 10px" class="pointer fa fa-chevron-circle-down"></i>
+            </h3>
+            <div class="header-button" *ngIf="toggleCol[2] === true">
+                <i (click)="toggleColumn(2)" class="pointer fa fa-chevron-circle-left"></i>
+            </div>
+        </div>
+
+        <div class="main-content" id="board-col3">
+            <div id="board-col3-h" *ngIf="toggleCol[2] === false" class="board-column" ngxDroppable="zone3" [model]="col3" [copy]="false" (drop)="onDrop($event)"
+                (drag)="onDrag($event)" (over)="onOver($event)" (out)="log($event)">
+                
+                <!-- CARD-->
+                <div *ngFor="let card of col3" [model]="card" ngxDraggable="['zone1', 'zone2', 'zone3', 'zone4']"
+                [ngClass]="{
+                'card': true,
+                'status-approved': card?.value?.epic?.state?.id === 'Approved',
+                'status-closed': card?.value?.epic?.state?.id === 'Closed',
+                'status-draft': card?.value?.epic?.state?.id === 'Draft',
+                'status-postponed': card?.value?.epic?.state?.id === 'Postponed',
+                'status-proposed': card?.value?.epic?.state?.id === 'Proposed',
+                'status-rejected': card?.value?.epic?.state?.id === 'Rejected'}">
+                    <div class="card-header">
+                        <i class="fa fa-bars"></i>
+                        <div title="{{card?.value?.epic?.name}}" class="title">{{card?.value?.epic?.rank}} {{card?.value?.epic?.name}}</div>
+                        <i title="{{card?.value?.epic?.description}}" class="fa fa-question-circle"></i>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-owner" *ngIf="card?.value?.epic?.owner">
+                            <i class="fa fa-user pr2 gray"></i>
+                            {{card?.value?.epic?.owner?.firstName}} {{card?.value?.epic?.owner?.lastName}}
+                        </div>
+
+                        <div class="card-state text-draft"
+                        [ngClass]="{ 'text-approved': card?.value?.epic?.state?.id === 'Approved',
+                        'text-closed': card?.value?.epic?.state?.id === 'Closed',
+                        'text-draft': card?.value?.epic?.state?.id === 'Draft',
+                        'text-postponed': card?.value?.epic?.state?.id === 'Postponed',
+                        'text-proposed': card?.value?.epic?.state?.id === 'Proposed',
+                        'text-rejected': card?.value?.epic?.state?.id === 'Rejected'}"
+                        *ngIf="card?.value?.epic?.state?.id">
+                        <i class="fa fa-tag pr2"></i>
+                        {{card?.value?.epic?.state?.id}}
+                        </div>
+
+                        <div class="card-status text-success"
+                        [ngClass]="{ 'text-success': card?.value?.epic?.status?.id === 'Green',
+                        'text-warning': card?.value?.epic?.status?.id === 'Yellow',
+                        'text-danger': card?.value?.epic?.status?.id === 'Red'}"
+                        *ngIf="card?.value?.epic?.status?.id">
+                        <i class="fa fa-rocket pr2"></i>
+                        {{card?.value?.epic?.status?.id}}
+                        </div>
+
+                        <div title="Effort" class="size-label"><small>{{card?.value?.epic?.effort?.id}}</small></div>
+                    </div>
+                    <div class="card-footer">
+                        <small title="Value estimate / Duration estimate" *ngIf="card?.value?.epic?.valueEstimate && card?.value?.epic?.durationEstimate" class="badge alert-warning">
+                            <i class="fa fa-fw fa-hourglass-end"></i> {{Math.round(card?.value?.epic?.valueEstimate / card?.value?.epic?.durationEstimate * 10) / 10}}
+                        </small>
+                    </div>
+                    
+                </div>
+
+            </div>
+            
+        </div>
+    </div>
+    <div [ngClass]="{'column-content': toggleCol[3] === false, 'column-content-closed column-content-closed-end': toggleCol[3] === true }">
+        <div class="header-content header-content-end">
+            <h3 *ngIf="toggleCol[3] === false">
+                Rejected
+                <i (click)="toggleColumn(3)" style="float: right; line-height: 30px; margin-right: 10px" class="pointer fa fa-chevron-circle-down"></i>
+            </h3>
+            <div class="header-button" *ngIf="toggleCol[3] === true">
+                <i (click)="toggleColumn(3)" class="pointer fa fa-chevron-circle-left"></i>
+            </div>
+        </div>
+
+        <div class="main-content" id="board-col4">
+            <div id="board-col4-h" *ngIf="toggleCol[3] === false" class="board-column board-column-end" ngxDroppable="zone4" [model]="col4" [copy]="false" (drop)="onDrop($event)"
+                (drag)="onDrag($event)" (over)="onOver($event)" (out)="log($event)">
+                
+                <!-- CARD-->
+                <div *ngFor="let card of col4" [model]="card" ngxDraggable="['zone1', 'zone2', 'zone3', 'zone4']"
+                [ngClass]="{
+                'card': true,
+                'status-approved': card?.value?.epic?.state?.id === 'Approved',
+                'status-closed': card?.value?.epic?.state?.id === 'Closed',
+                'status-draft': card?.value?.epic?.state?.id === 'Draft',
+                'status-postponed': card?.value?.epic?.state?.id === 'Postponed',
+                'status-proposed': card?.value?.epic?.state?.id === 'Proposed',
+                'status-rejected': card?.value?.epic?.state?.id === 'Rejected'}">
+                    <div class="card-header">
+                        <i class="fa fa-bars"></i>
+                        <div title="{{card?.value?.epic?.name}}" class="title">{{card?.value?.epic?.rank}} {{card?.value?.epic?.name}}</div>
+                        <i title="{{card?.value?.epic?.description}}" class="fa fa-question-circle"></i>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-owner" *ngIf="card?.value?.epic?.owner">
+                            <i class="fa fa-user pr2 gray"></i>
+                            {{card?.value?.epic?.owner?.firstName}} {{card?.value?.epic?.owner?.lastName}}
+                        </div>
+
+                        <div class="card-state text-draft"
+                        [ngClass]="{ 'text-approved': card?.value?.epic?.state?.id === 'Approved',
+                        'text-closed': card?.value?.epic?.state?.id === 'Closed',
+                        'text-draft': card?.value?.epic?.state?.id === 'Draft',
+                        'text-postponed': card?.value?.epic?.state?.id === 'Postponed',
+                        'text-proposed': card?.value?.epic?.state?.id === 'Proposed',
+                        'text-rejected': card?.value?.epic?.state?.id === 'Rejected'}"
+                        *ngIf="card?.value?.epic?.state?.id">
+                        <i class="fa fa-tag pr2"></i>
+                        {{card?.value?.epic?.state?.id}}
+                        </div>
+
+                        <div class="card-status text-success"
+                        [ngClass]="{ 'text-success': card?.value?.epic?.status?.id === 'Green',
+                        'text-warning': card?.value?.epic?.status?.id === 'Yellow',
+                        'text-danger': card?.value?.epic?.status?.id === 'Red'}"
+                        *ngIf="card?.value?.epic?.status?.id">
+                        <i class="fa fa-rocket pr2"></i>
+                        {{card?.value?.epic?.status?.id}}
+                        </div>
+
+                        <div title="Effort" class="size-label"><small>{{card?.value?.epic?.effort?.id}}</small></div>
+                    </div>
+                    <div class="card-footer">
+                        <small title="Value estimate / Duration estimate" *ngIf="card?.value?.epic?.valueEstimate && card?.value?.epic?.durationEstimate" class="badge alert-warning">
+                            <i class="fa fa-fw fa-hourglass-end"></i> {{Math.round(card?.value?.epic?.valueEstimate / card?.value?.epic?.durationEstimate * 10) / 10}}
+                        </small>
+                    </div>
+                    
+                </div>
+
+            </div>
+            
+        </div>
+    </div>
+</div>

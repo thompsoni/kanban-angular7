@@ -1,0 +1,24 @@
+<div class="skin-blue sidebar-mini" [ngClass]="{'sidebar-collapse': ts.getValue('sidebar-collapse','layout-navigation-collapse'), 'sidebar-open': ts.getValue('sidebar-open','layout-navigation-open') }">
+    <div class="wrapper">
+        <!-- <app-loader></app-loader> -->
+        <app-header [links]="mylinks">{{ 'LOADING' }} header...</app-header>
+        <app-growl baseZIndex="9999" style="position: absolute;"></app-growl>
+
+        <ng-template menuHost></ng-template>
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper" (click)="ts.setValue(false, 'sidebar-open', 'layout-navigation-open')">
+            <!-- Content Header (Page header) -->
+            <app-breadcrumb></app-breadcrumb>
+
+            <!-- Main content -->
+            <section class="content" style="padding: 10px">
+                <router-outlet></router-outlet>
+            </section>
+            <!-- /.content -->
+        </div>
+        <!-- /.content-wrapper -->
+        <app-footer>{{ 'LOADING' }} footer...</app-footer>
+        <!-- <app-aside>{{ 'LOADING' }} control sidebar...</app-aside> -->
+    </div>
+    <!-- ./wrapper -->
+</div>

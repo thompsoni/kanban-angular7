@@ -1,0 +1,6 @@
+<app-growl></app-growl>
+<login-form
+  (submitted)="onSubmit($event)"
+  [pending]="pending$ | async"
+  [errorMessage]="error$ | async">
+</login-form>

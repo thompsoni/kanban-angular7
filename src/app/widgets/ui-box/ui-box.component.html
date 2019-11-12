@@ -1,0 +1,19 @@
+<div class="box" class="{{class}}" [ngClass]="ngClass">
+    <div [hidden]="!showHeader && !showActions" class="box-header" [ngClass]="{'with-border': withBorder === true}">
+        <h3 class="box-title">
+            <ng-content select="ui-box-header"></ng-content>
+        </h3>
+        <div [hidden]="!showActions" class="box-tools pull-right">
+            <ng-content select="ui-box-actions"></ng-content>
+        </div>
+    </div>
+    <div class="box-body" [ngClass]="{'no-padding': noPadding === true}">
+        <ng-content></ng-content>
+    </div>
+    <div [hidden]="!showFooter" class="box-footer">
+        <ng-content select="ui-box-footer"></ng-content>
+    </div>
+    <div class="overlay" *ngIf="loading">
+        <i class="fa fa-refresh fa-spin"></i>
+    </div>
+</div>

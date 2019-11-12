@@ -1,0 +1,23 @@
+<section class="content-header" *ngIf="display">
+    
+    <div
+    style="white-space: nowrap; 
+    max-width: 300px; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 20px;
+    font-weight: bold;
+    display: inline-block;">
+        {{ header }}
+    </div>
+    <h1 style="display: inline-block; vertical-align: top"><small>{{ description }}</small></h1>
+    <ol class="breadcrumb">
+        <ng-template let-item ngFor [ngForOf]="levels">
+            <li [class.active]="item.active">
+                <a [routerLink]="item.link" [queryParams]="item.queryParams">
+                    <i *ngIf="item.icon !=null" class="fa fa-{{item.icon}}"></i> {{ item.title }}
+                </a>
+            </li>
+        </ng-template>
+    </ol>
+</section>

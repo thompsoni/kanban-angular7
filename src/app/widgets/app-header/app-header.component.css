@@ -1,0 +1,3 @@
+#dropdown-link:hover + #dropdown-content { display: inline-block; }
+#dropdown-content:hover { display: inline-block; }
+#dropdown-content { display: none; }

@@ -1,0 +1,69 @@
+<!-- Left side column. contains the logo and sidebar -->
+<aside class="main-sidebar">
+		<!-- sidebar: style can be found in sidebar.less -->
+		<section class="sidebar">
+	
+			<div *ngIf="!toggleVal">
+				
+				
+				<div *ngIf="enableEditFolder && isAdmin">
+					<input [ngModel]="search" (ngModelChange)='filterTimeout($event)' type="text" class="tree-search-box" placeholder=" Search ...">
+					<button type="button" class="btn add-new-button" (click)="op1.toggle($event)" title="Add new tree item">
+						<i class="fa fa-plus"></i>
+					</button>
+					<p-overlayPanel #op1
+					styleClass="my-overlaypanel"
+					>
+							<button (click)="addNewFolder()"><i class="fa fa-folder"></i>Folder</button>
+							<button *ngIf="showDomain" (click)="addNewDomain()"><i class="fa fa-list-ul"></i>Domain</button>
+					</p-overlayPanel>
+				</div>
+				<div *ngIf="!enableEditFolder || !isAdmin">
+					<input [ngModel]="search" (ngModelChange)='filterTimeout($event)' type="text" class="form-control" placeholder=" Search ...">
+				</div>
+				<p-tree 
+				[value]="treeDataFiltered"
+				[style]="{'width': '100%', 'overflow-y': 'hidden', 'height': '500px'}"
+				selectionMode="single"
+				[(selection)]="selectedFile"
+				[loading]="treeLoading">
+				<ng-template let-node pTemplate="default">
+					<div class="node-content">
+						<i *ngIf="enableEditFolder && isAdmin && node.superType"  class="fa fa-pencil edit-icon" (click)="edit(node)" title="Edit"></i>
+						<div (click)="selectFN(node)">{{node.label}}</div>
+					</div>
+			</ng-template>
+				</p-tree>
+				<!-- <p-contextMenu #cm [model]="items"></p-contextMenu> -->
+				<div style="background: white; padding: 3px">
+					<button [disabled]="treeDataCount > 500" (click)="expandAll()" type="button" class="btn btn-success btn-xs">
+						<i class="fa fa-plus"></i> Expand all
+					</button>
+					<button (click)="collapseAll()" type="button" class="btn btn-success btn-xs">
+						<i class="fa fa-minus"></i> Collapse all
+					</button>
+				</div>
+			</div>
+	
+			<div (click)="logout()" class="sidebutton" *ngIf="toggleVal === false" style="height: 50px; line-height: 50px; text-align: center">
+				<i class="fa fa-sign-out" style="color: white; font-size: 15px;"></i>
+				<small style="font-size: 14px; font-family: Helvetica Neue, Helvetica, Arial, sans-serif; color: white">Logout</small>
+			</div>
+			<div (click)="logout()" class="sidebutton" *ngIf="toggleVal !== false" style="height: 50px; line-height: 55px; text-align: center" title="Log Out">
+				<i class="fa fa-sign-out" style="color: white; font-size: 20px;"></i>
+			</div>
+			<div *ngIf="isAdmin"> 
+				<div routerLink="/admin" class="sidebutton" *ngIf="toggleVal === false" style="height: 50px; line-height: 50px; text-align: center">
+					<i class="fa fa-gear" style="color: white; font-size: 15px;"></i>
+					<small style="font-size: 14px; font-family: Helvetica Neue, Helvetica, Arial, sans-serif; color: white">Admin</small>
+				</div>
+				<div routerLink="/admin" class="sidebutton" *ngIf="toggleVal !== false" style="height: 50px; line-height: 55px; text-align: center" title="View admin dashboard">
+					<i class="fa fa-gear" style="color: white; font-size: 20px;"></i>
+				</div>
+			</div>
+		
+			<!-- /.sidebar-menu -->
+		</section>
+		<!-- /.sidebar -->
+	
+	</aside>

@@ -1,0 +1,368 @@
+/* You can add global styles to this file, and also import other style files */
+.loader {
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid #3498db;
+  width: 50px;
+  margin: 0 auto;
+  height: 50px;
+  margin-top: 20px;
+  -webkit-animation: spin 0.5s linear infinite; /* Safari */
+  animation: spin 0.5s linear infinite;
+}
+
+/* Safari */
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@brand-primary: #003c64;
+@brand-primary-actionable: #1a9ad0;
+@brand-success: #3FB618;
+@brand-info: #9954BB;
+@brand-warning: #FF7518;
+@brand-danger: #FF0039;
+@dark: #222121;
+@toolbar-bg: #2f85b0;
+
+// FIT
+.fit-toolbar {
+  background-color: @toolbar-bg;
+  height: 35px;
+  line-height: 35px;
+  width: 100%;
+
+  .fit-btn {
+    height: 35px;
+    background-color: @toolbar-bg;
+    border: none;
+    color: white;
+    padding-left: 15px;
+    padding-right: 10px;
+  }
+
+  .fit-btn:hover {
+    background-color: #2176a2;
+  }
+}
+
+.fit-button {
+  border: none;
+  border-radius: 0;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+.fit-button-size-s {
+  padding: 3px 16px;
+}
+.fit-button-size-m {
+  padding: 3px 24px;
+}
+.fit-button-size-l {
+  padding: 3px 30px;
+}
+.fit-button-primary {background-color: #2780e3;}
+.fit-button-default {background-color: #222222;}
+.fit-button-danger {background-color: #f44336;}
+.fit-button-warning {background-color: #c6c333;}
+.fit-button-success {background-color: #4CAF50;}
+.fit-button-primary:hover {background-color: #1a69c4;}
+.fit-button-default:hover {background-color: #181818;}
+.fit-button-danger:hover {background-color: #ce3024;}
+.fit-button-warning:hover {background-color: #a9a725;}
+.fit-button-success:hover {background-color: #399b3e;}
+.fit-button-primary:disabled {opacity: 0.5; cursor: not-allowed}
+.fit-button-default:disabled {opacity: 0.5; cursor: not-allowed}
+.fit-button-danger:disabled {opacity: 0.5; cursor: not-allowed}
+.fit-button-warning:disabled {opacity: 0.5; cursor: not-allowed}
+.fit-button-success:disabled {opacity: 0.5; cursor: not-allowed}
+
+.skin-blue .main-header .navbar,
+.skin-blue .main-header li.user-header,
+.skin-blue.layout-top-nav .main-header > .logo {
+  background-color: @brand-primary;
+
+  background: linear-gradient(
+    to bottom,
+    @brand-primary-actionable 3px,
+    @brand-primary 3px
+  );
+}
+
+// Navbar top strip is red if user is offline
+.skin-blue .main-header.offline .navbar,
+.skin-blue .main-header.offline li.user-header,
+.skin-blue.layout-top-nav .main-header.offline > .logo {
+  background: linear-gradient(to bottom, #dd4b39 3px, @brand-primary 3px);
+}
+
+.skin-blue .sidebar-menu > li:hover > a,
+.skin-blue .sidebar-menu > li.active > a {
+  border-left-color: @brand-primary;
+}
+.skin-blue .main-header .logo:hover {
+  background-color: darken(@brand-primary-actionable, 10%);
+}
+.skin-blue .main-header .navbar .sidebar-toggle:hover {
+  background-color: @brand-primary-actionable;
+}
+
+@media (max-width: 767px) {
+  .skin-blue .main-header .navbar .dropdown-menu li a:hover {
+    background: @brand-primary-actionable;
+  }
+}
+
+.skin-blue .main-header .logo {
+  background-color: @brand-primary-actionable;
+}
+
+.skin-blue .main-header .navbar .nav > li > a:hover,
+.skin-blue .main-header .navbar .nav > li > a:active,
+.skin-blue .main-header .navbar .nav > li > a:focus,
+.skin-blue .main-header .navbar .nav .open > a,
+.skin-blue .main-header .navbar .nav .open > a:hover,
+.skin-blue .main-header .navbar .nav .open > a:focus,
+.skin-blue .main-header .navbar .nav > .active > a {
+  background: @brand-primary-actionable;
+}
+
+.skin-blue .wrapper,
+.skin-blue .main-sidebar,
+.skin-blue .left-side,
+.control-sidebar-dark,
+.control-sidebar-dark + .control-sidebar-bg,
+.control-sidebar-dark .nav-tabs.control-sidebar-tabs > li.active > a,
+.control-sidebar-dark .nav-tabs.control-sidebar-tabs > li.active > a:hover,
+.control-sidebar-dark .nav-tabs.control-sidebar-tabs > li.active > a:focus,
+.control-sidebar-dark .nav-tabs.control-sidebar-tabs > li.active {
+  background: @dark;
+}
+.skin-blue .sidebar-menu > li:hover > a,
+.skin-blue .sidebar-menu > li.active > a,
+.control-sidebar-dark .nav-tabs.control-sidebar-tabs > li > a,
+.control-sidebar-dark .control-sidebar-menu > li > a:hover {
+  background: darken(@dark, 3%);
+}
+
+.wrapper {
+  overflow-y: visible;
+  overflow-x: hidden;
+  min-height: 100%;
+  height: auto;
+}
+
+.user-panel .info {
+  max-width: calc(~'100% - 55px');
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+// Sidebar user icon online
+// Make surrounding element relative
+// to enable absolute positioning
+// relative to the parent element.
+.user-panel .image {
+  position: relative;
+}
+
+// Sidebar user icon online
+// is hidden
+// - by default
+// - when collapsed sidebar is open
+.user-panel .image .online,
+.sidebar-collapse.sidebar-open .user-panel .image .online {
+  opacity: 0;
+  visibility: hidden;
+  transition-delay: 0s;
+  transition-property: opacity;
+  transition-duration: 0s;
+
+  position: absolute;
+  bottom: -5px;
+  right: 0px;
+  font-size: 10px;
+}
+
+// Sidebar user icon online
+// is visible
+// - when collapsed sidebar is not open
+.sidebar-collapse .user-panel .image .online {
+  opacity: 1;
+  visibility: visible;
+  transition-delay: 0.6s;
+  transition-duration: 0.3s;
+}
+
+// Sidebar user icon has "cutoout" to separate it from the user icon
+.user-panel .image .online .fa::before {
+  text-shadow: 0px -1px 0px #222121, -1px 0px 0px #222121;
+}
+
+// Filler to fix margins defined in original template to a-tag
+.user-panel .info .online {
+  text-decoration: none;
+  padding-right: 5px;
+  margin-top: 3px;
+  font-size: 11px;
+}
+
+.content-wrapper {
+  // 50px header bar
+  // 51px footer
+  min-height: ~'calc(100vh - 101px)';
+}
+
+.box-body.no-padding .ui-datatable {
+  .ui-datatable-thead > tr > th:first-child {
+    border-left-width: 0px;
+  }
+
+  .ui-datatable-thead > tr > th:last-child {
+    border-right-width: 0px;
+  }
+
+  .ui-datatable-data {
+    border: none;
+
+    & > tr {
+      border-right-width: 0px;
+      border-left-width: 0px;
+
+      td:last-child {
+        border-right-width: 0px !important;
+      }
+
+      td:first-child {
+        border-left-width: 0px !important;
+      }
+    }
+  }
+
+  .ui-paginator {
+    border-right: none;
+    border-left: none;
+    border-bottom: none;
+  }
+}
+
+.ui-corner-all,
+.ui-corner-top,
+.ui-corner-bottom,
+.ui-corner-left,
+.ui-corner-right {
+  border-radius: 0px !important;
+}
+
+.ui-autocomplete .ui-button {
+  padding: 0.08em;
+}
+
+// DATATABLE TWEAKS FROM PRIMENG
+@media (max-width: 35em) {
+  .ui-datatable-reflow thead th,
+  .ui-datatable-reflow tfoot td {
+    display: none !important;
+  }
+
+  .ui-datatable-reflow .ui-datatable-data > tr > td {
+    text-align: left;
+    display: block;
+    border: 0 none;
+    width: 100% !important;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    float: left;
+    clear: left;
+  }
+
+  .ui-datatable-reflow .ui-datatable-data.ui-widget-content {
+    border: 0 none;
+  }
+
+  .ui-datatable-reflow .ui-datatable-data tr.ui-widget-content {
+    border-left: 0 none;
+    border-right: 0 none;
+  }
+
+  .ui-datatable-reflow .ui-datatable-data td .ui-column-title {
+    padding: 0.4em;
+    min-width: 30%;
+    display: inline-block;
+    margin: -0.4em 1em -0.4em -0.4em;
+    font-weight: bold;
+  }
+
+  .ui-datatable-reflow.ui-datatable-scrollable
+    .ui-datatable-scrollable-body
+    colgroup {
+    display: block;
+  }
+}
+
+.box-header[hidden] {
+  display: none;
+}
+
+.hw-l {
+  width: 49%;
+  display: inline-block;
+}
+.hw-r {
+  width: 49%;
+  display: inline-block;
+  float: right;
+  clear: both;
+}
+.red {
+  color: #de5039;
+}
+.green {
+  color: green;
+}
+
+.fa-stack.x-fa-action-stack {
+  vertical-align: -30%;
+}
+/* Stackable font awesome */
+.fa.x-fa-action {
+  font-size: 80%;
+  margin: 50% 0px 0px 50%;
+  line-height: 1;
+  position: absolute;
+  left: 0;
+  border-radius: 100%;
+  background: #fff;
+  min-width: 1.1em;
+  min-height: 1.1em;
+  padding: 0.1em;
+}
+
+.btn-primary .x-fa-action {
+  background: #3c8dbc;
+}
+
+.btn-warning .x-fa-action {
+  background: #f39c12;
+}
+
+.btn-danger .x-fa-action {
+  background: #dd4b39;
+}
+
+.btn-success .x-fa-action {
+  background: #00a65a;
+}

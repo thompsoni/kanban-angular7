@@ -1,0 +1,37 @@
+.sidebutton {
+    background-color: #003c64;
+    cursor: pointer;
+}
+.sidebutton:hover {
+    background-color: #1a9ad0;
+}
+
+.tree-search-box {
+    width: 85%;
+    line-height: 2;
+}
+
+.add-new-button {
+    width: 15%;
+    float: right;
+    border-radius: 0;
+}
+
+.my-overlaypanel {
+    padding: 0!important;
+}
+
+.node-content{
+    width: 170px;
+}
+
+.edit-icon{
+    float: left;
+    line-height: 20px;
+    margin-right: 3px;
+}
+
+.ui-state-highlight {
+    background-color: white;
+    color: blue;
+}

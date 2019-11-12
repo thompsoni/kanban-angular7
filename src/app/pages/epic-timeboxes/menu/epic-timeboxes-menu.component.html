@@ -1,0 +1,25 @@
+<!-- Left side column. contains the logo and sidebar -->
+<aside class="main-sidebar">
+    <!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar">
+        <div class="menu-container" *ngIf="!menuCollapsed">
+            <div class="menu-title">
+                <i style="color: white" class="fa fa-angle-double-right"></i> Epic Planning
+                <i style="padding: 5px; color: white; float: right" class="fa fa-tasks"></i>
+            </div>
+            <div class="menu-content">
+                <div style="padding: 10px">
+                    <div style="padding: 5px; background-color: #1d63b1; height: 50px; width: 50px; text-align: center">
+                        <i style="font-size: 14px; color: white" class="fa fa-tasks"></i>
+                        <p style="line-height: 11px; font-size: 11px; color: white">Epic Planning</p>
+                    </div>
+                </div>
+                <hr style="margin: 0">
+            </div>
+        </div>
+        <div class="menu-container" *ngIf="menuCollapsed">
+            <div class="menu-mini"><i class="fa fa-tasks"></i></div>
+        </div>
+
+    </section>
+</aside>

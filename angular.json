@@ -1,0 +1,201 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "Nokia Archive": {
+      "root": "",
+      "sourceRoot": "src",
+      "projectType": "application",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist",
+            "index": "src/index.html",
+            "main": "src/main.ts",
+            "tsConfig": "src/tsconfig.app.json",
+            "polyfills": "src/polyfills.ts",
+            "assets": [
+              "src/public",
+              "src/favicon.ico",
+              "src/manifest.json"
+            ],
+            "styles": [
+              "node_modules/font-awesome/css/font-awesome.css",
+              "node_modules/bootstrap/dist/css/bootstrap.css",
+              "node_modules/admin-lte/dist/css/AdminLTE.css",
+              "node_modules/admin-lte/dist/css/skins/skin-blue.css",
+              "node_modules/primeng/resources/primeng.css",
+              "node_modules/primeng/resources/themes/bootstrap/theme.css",
+              "src/styles.less",
+              "node_modules/ag-grid/dist/styles/ag-grid.css",
+              "node_modules/ag-grid/dist/styles/ag-theme-fresh.css",
+              "node_modules/@swimlane/dragula/dist/dragula.css"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "development": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.development.ts"
+                }
+              ]
+            },
+            "testing": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.testing.ts"
+                }
+              ]
+            },
+            "hmr": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.hmr.ts"
+                }
+              ]
+            },
+            "staging": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.staging.ts"
+                }
+              ]
+            },
+            "production": {
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "Nokia Archive:build"
+          },
+          "configurations": {
+            "development": {
+              "browserTarget": "Nokia Archive:build:development"
+            },
+            "testing": {
+              "browserTarget": "Nokia Archive:build:testing"
+            },
+            "hmr": {
+              "browserTarget": "Nokia Archive:build:hmr"
+            },
+            "staging": {
+              "browserTarget": "Nokia Archive:build:staging"
+            },
+            "production": {
+              "browserTarget": "Nokia Archive:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "Nokia Archive:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "src/test.ts",
+            "karmaConfig": "./karma.conf.js",
+            "polyfills": "src/polyfills.ts",
+            "tsConfig": "src/tsconfig.spec.json",
+            "scripts": [],
+            "styles": [
+              "node_modules/font-awesome/css/font-awesome.css",
+              "node_modules/bootstrap/dist/css/bootstrap.css",
+              "node_modules/admin-lte/dist/css/AdminLTE.css",
+              "node_modules/admin-lte/dist/css/skins/skin-blue.css",
+              "node_modules/primeng/resources/primeng.css",
+              "node_modules/primeng/resources/themes/bootstrap/theme.css",
+              "src/styles.less",
+              "node_modules/ag-grid/dist/styles/ag-grid.css",
+              "node_modules/ag-grid/dist/styles/ag-theme-fresh.css",
+              "node_modules/@swimlane/dragula/dist/dragula.css"
+            ],
+            "assets": [
+              "src/public",
+              "src/favicon.ico",
+              "src/manifest.json"
+            ]
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "src/tsconfig.app.json",
+              "src/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**",
+              "**/src/app/models/a360.dtos.ts"
+            ]
+          }
+        }
+      }
+    },
+    "Nokia Archive-e2e": {
+      "root": "",
+      "sourceRoot": "",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "./protractor.conf.js",
+            "devServerTarget": "Nokia Archive:serve"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "e2e/tsconfig.e2e.json"
+            ],
+            "exclude": [
+              "**/node_modules/**",
+              "**/src/app/models/a360.dtos.ts"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "defaultProject": "Nokia Archive",
+  "cli": {
+    "packageManager": "yarn"
+  },
+  "schematics": {
+    "@schematics/angular:component": {
+      "prefix": "app",
+      "styleext": "css"
+    },
+    "@schematics/angular:directive": {
+      "prefix": "app"
+    }
+  }
+}

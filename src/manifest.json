@@ -1,0 +1,16 @@
+{
+    "name": "Kanban Demo",
+    "short_name": "KAN",
+    "icons": [
+    {
+        "src": "public/assets/img/icon.svg",
+        "sizes": "720x720",
+        "type": "image\/svg"
+    }
+    ],
+    "theme_color": "#d2d6de",
+    "background_color": "#d2d6de",
+    "display": "standalone",
+    "orientation": "portrait",
+    "start_url": "/?utm_source=web_app_manifest"
+}

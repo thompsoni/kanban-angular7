@@ -1,0 +1,173 @@
+image: node:6.10.3
+before_script:
+  - npm -v
+  - npm install -g yarn
+  - yarn --version
+
+variables:
+  CHROME_BIN: "/usr/bin/chromium"
+
+cache:
+  key: "$CI_PROJECT_ID"
+  paths:
+    - .yarn
+
+stages:
+  - test
+  - build
+  - review
+  - deploy
+
+test:
+  stage: test
+  tags:
+    - shared
+    - linux
+    - docker
+  before_script:
+    - apt-get update
+    - apt-get install -y --no-install-recommends chromium
+  script:
+    - yarn config set cache-folder .yarn
+    - yarn install --frozen-lockfile
+    - echo "Running tests"
+    - yarn test
+
+lint:
+  stage: test
+  tags:
+    - shared
+    - linux
+    - docker
+  script:
+    - yarn config set cache-folder .yarn
+    - yarn install --frozen-lockfile
+    - echo "Running tests"
+    - yarn lint    
+
+build-staging:
+  stage: build
+  script:
+    - yarn config set cache-folder .yarn
+    - yarn install --frozen-lockfile
+    - echo "Running staging build"
+    - yarn staging
+    - echo "Staging build complete"
+  artifacts:
+    paths:
+      - dist/staging/
+    expire_in: 2h
+  except:
+    - master
+
+build-production:
+  stage: build
+  script:
+    - yarn config set cache-folder .yarn
+    - yarn install --frozen-lockfile
+    - echo "Running production build"
+    - yarn prod
+    - echo "Production build complete"
+  artifacts:
+    paths:
+      - dist/production/
+  only:
+    - master
+
+deploy-review:
+  stage: review
+  dependencies:
+    - build-staging
+  before_script:
+    # Install ssh-agent if not already installed, it is required by Docker.
+    # (change apt-get to yum if you use a CentOS-based image)
+    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+    # Run ssh-agent (inside the build environment)
+    - eval $(ssh-agent -s)
+    # Add the SSH key stored in SSH_PRIVATE_KEY variable to the agent store
+    - ssh-add <(echo "$SSH_PRIVATE_KEY")
+    # For Docker builds disable host key checking. Be aware that by adding that
+    # you are suspectible to man-in-the-middle attacks.
+    # WARNING: Use this only with the Docker executor, if you use it with shell
+    # you will overwrite your user's SSH config.
+    - mkdir -p ~/.ssh
+    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+    # In order to properly check the server's host key, assuming you created the
+    # SSH_SERVER_HOSTKEYS variable previously, uncomment the following two lines
+    # instead.
+    # - mkdir -p ~/.ssh
+    # - '[[ -f /.dockerenv ]] && echo "$SSH_SERVER_HOSTKEYS" > ~/.ssh/known_hosts'
+    - 'which rsync || ( apt-get update -y && apt-get -y install rsync apt-utils && apt-get -y remove apt-utils && apt-get -y autoremove )'
+  script:
+    - echo "Deploying to review server"
+    - rsync -zaruv --delete-after -e ssh $CI_PROJECT_DIR/dist/staging/ $SSH_USERNAME@$SSH_HOST:/home/ubuntu/review/ui/$CI_PROJECT_ID-$CI_BUILD_REF_SLUG
+    - echo "Deploy complete"
+  environment:
+    name: review/$CI_BUILD_REF_NAME
+    url: https://$CI_PROJECT_ID-$CI_BUILD_REF_SLUG$REVIEW_HOST
+    on_stop: stop_review
+  only:
+    - branches
+  except:
+    - develop
+    - master
+
+stop_review:
+  stage: review
+  before_script:
+    # Install ssh-agent if not already installed, it is required by Docker.
+    # (change apt-get to yum if you use a CentOS-based image)
+    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+    # Run ssh-agent (inside the build environment)
+    - eval $(ssh-agent -s)
+    # Add the SSH key stored in SSH_PRIVATE_KEY variable to the agent store
+    - ssh-add <(echo "$SSH_PRIVATE_KEY")
+    # For Docker builds disable host key checking. Be aware that by adding that
+    # you are suspectible to man-in-the-middle attacks.
+    # WARNING: Use this only with the Docker executor, if you use it with shell
+    # you will overwrite your user's SSH config.
+    - mkdir -p ~/.ssh
+    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+  script:
+    - ssh $SSH_USERNAME@$SSH_HOST "rm -rf /home/ubuntu/review/ui/$CI_PROJECT_ID-$CI_BUILD_REF_SLUG"
+  variables:
+    GIT_STRATEGY: none
+  when: manual
+  environment:
+    name: review/$CI_BUILD_REF_NAME
+    action: stop
+
+deploy-staging:
+  stage: deploy
+  dependencies:
+    - build-staging
+  before_script:
+    # Install ssh-agent if not already installed, it is required by Docker.
+    # (change apt-get to yum if you use a CentOS-based image)
+    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+    # Run ssh-agent (inside the build environment)
+    - eval $(ssh-agent -s)
+    # Add the SSH key stored in SSH_PRIVATE_KEY variable to the agent store
+    - ssh-add <(echo "$SSH_PRIVATE_KEY")
+    # For Docker builds disable host key checking. Be aware that by adding that
+    # you are suspectible to man-in-the-middle attacks.
+    # WARNING: Use this only with the Docker executor, if you use it with shell
+    # you will overwrite your user's SSH config.
+    - mkdir -p ~/.ssh
+    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+    # In order to properly check the server's host key, assuming you created the
+    # SSH_SERVER_HOSTKEYS variable previously, uncomment the following two lines
+    # instead.
+    # - mkdir -p ~/.ssh
+    # - '[[ -f /.dockerenv ]] && echo "$SSH_SERVER_HOSTKEYS" > ~/.ssh/known_hosts'
+    - 'which rsync || ( apt-get update -y && apt-get -y install rsync apt-utils && apt-get -y remove apt-utils && apt-get -y autoremove )'
+  script:
+    - echo "Deploying to staging server"
+    - rsync -zaruv --delete-after -e ssh $CI_PROJECT_DIR/dist/staging/ $SSH_USERNAME@$SSH_HOST:/home/ubuntu/ihp-ui
+    - echo "Deploy complete"
+  environment:
+    name: staging
+    url: https://ihp-ui.php7dev.greitco.com
+  only:
+    - develop
+
